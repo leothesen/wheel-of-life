@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "Codebase"
+        "Codebase",
+        "Wheel"
     ]
 }
