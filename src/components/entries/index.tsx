@@ -1,39 +1,48 @@
-// Create a react component called Entries
-export const Entries = () => {
+interface Entry {
+  data: {
+    [key: string]: number;
+  };
+  meta: {
+    color: string;
+  };
+  date: Date;
+}
+
+interface Props {
+  data: Entry[];
+  captions: {
+    [key: string]: string;
+  };
+}
+
+export const Entries: React.FC<Props> = ({ data, captions }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table">
         {/* head */}
         <thead>
           <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
+            {/* Additional headers */}
+            <th>Date</th>
+            {Object.values(captions).map((caption, index) => (
+              <th key={index}>{caption}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {/* row 1 */}
-          <tr>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
-          {/* row 2 */}
-          <tr>
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          {/* row 3 */}
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
+          {/* rows */}
+          {data.map((entry, index) => (
+            <tr key={index}>
+
+              {/* Additional data */}
+              <td>{entry.date.toString()}</td>
+
+              {/* Data */}
+              {Object.keys(entry.data).map((key, dataIndex) => (
+                <td key={dataIndex}>{entry.data[key]}</td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
