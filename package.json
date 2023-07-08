@@ -16,7 +16,7 @@
     "@commitlint/config-conventional": "^17.6.6",
     "@prisma/client": "^4.14.1",
     "@tanstack/react-query": "^4.29.1",
-    "@trpc/client": "^10.27.1",
+    "@trpc/client": "^10.34.0",
     "@trpc/next": "^10.19.1",
     "@trpc/react-query": "^10.16.0",
     "@trpc/server": "^10.9.0",
