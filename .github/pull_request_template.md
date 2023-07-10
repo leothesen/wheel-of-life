@@ -10,26 +10,19 @@
 -->
 
 # Description 🎙️
-
-Please include a summary of the change. Please also include relevant motivation and context. List any dependencies that are required for this change.
+<!-- Please include a summary of the change. Please also include relevant motivation and context. List any dependencies that are required for this change. -->
 
 ## Context or background 🏞️
-
-Any other information required to understand this task?
+<!-- Any other information required to understand this task? -->
 
 ## Data inputs and responses ↔️
-
-Please define the required and expected inputs and responses if applicable. 
-
-
+<!-- Please define the required and expected inputs and responses if applicable.  -->
 
 # Screenshots and recordings 📸
-
-Please include any screenshots or recordings if required. 
+<!-- Please include any screenshots or recordings if required.  -->
 
 # How should this be tested 🧪
-
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
+<!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration -->
 
 
 # Checklist ✅
@@ -42,4 +35,4 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] 🧪 I have added tests that prove my fix is effective or that my feature works
 - [ ] 🛂 New and existing unit tests pass locally with my changes
 - [ ] 👭 Any dependent changes have been merged and published in downstream modules
-- [ ] 📃 I have updated documentation in either the README.md or Notion 
+- [ ] 📃 I have updated documentation in either the README.md
