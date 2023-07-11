@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Wheel <span className="text-[#66bcee]">of</span> Life
           </h1>
-        <UserButton afterSignOutUrl="/sign-in" />
+        <UserButton afterSignOutUrl="/" />
       </header>
       <main>{children}</main>
     </>
