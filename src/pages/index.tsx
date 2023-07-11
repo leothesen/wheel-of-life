@@ -7,6 +7,7 @@ import "react-svg-radar-chart/build/css/index.css";
 
 import { api } from "../utils/api";
 import { Entries } from "../components/entries";
+import Layout from "../components/layout";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
     {
       data: {
         health: 0.9,
-        sleep: 0.2, 
+        sleep: 0.2,
         food: 0.2,
         emotionalIntelligence: 0.6,
         personalDevelopment: 0.9,
@@ -25,12 +26,12 @@ const Home: NextPage = () => {
         exercise: 0.2,
       },
       meta: { color: "blue" },
-      date: new Date()
+      date: new Date(),
     },
     {
       data: {
         health: 0.9,
-        sleep: 0.2, 
+        sleep: 0.2,
         food: 0.2,
         emotionalIntelligence: 0.6,
         personalDevelopment: 0.9,
@@ -40,7 +41,7 @@ const Home: NextPage = () => {
         exercise: 0.2,
       },
       meta: { color: "red" },
-      date: new Date()
+      date: new Date(),
     },
   ];
 
@@ -63,17 +64,14 @@ const Home: NextPage = () => {
         <meta name="Wheel of Life app" content="For tracking and reflecting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-      <UserButton afterSignOutUrl="/sign-in" />
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Wheel <span className="text-[#66bcee]">of</span> Life
-          </h1>
-          <RadarChart captions={captions} data={data} size={700} />
-          <Entries data={data} captions={captions}/>
-        </div>
-      </main>
+      <Layout>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
+          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+            <RadarChart captions={captions} data={data} size={700} />
+            <Entries data={data} captions={captions} />
+          </div>
+        </main>
+      </Layout>
     </>
   );
 };

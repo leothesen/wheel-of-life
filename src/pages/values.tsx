@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { UserButton } from "@clerk/nextjs";
 import Head from "next/head";
 import { api } from "../utils/api";
+import Layout from "../components/layout";
 
 const Values: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,14 +65,9 @@ const Values: NextPage = () => {
         <meta name="Wheel of Life app" content="For tracking and reflecting" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Layout>
       <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <UserButton afterSignOutUrl="/sign-in" />
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Wheel <span className="text-[#66bcee]">of</span> Life
-          </h1>
-
           <div className="flex flex-col items-center gap-4">
             {values.map((value, index) => (
               <div
@@ -114,6 +110,8 @@ const Values: NextPage = () => {
           </div>
         </div>
       </main>
+      </Layout>
+      
     </>
   );
 };
