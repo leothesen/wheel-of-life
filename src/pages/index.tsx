@@ -99,7 +99,14 @@ const Home: NextPage = () => {
         <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <RadarChart captions={captions} data={data} size={200} />
-            {!user ? <SignInButton /> : null}
+            {!user ? (
+              <div className="hover:bg-primary-dark rounded-md bg-primary px-4 py-2 text-white transition-all duration-200 ease-in-out">
+                <SignInButton
+                  afterSignInUrl="/entries"
+                  afterSignUpUrl="/values"
+                />
+              </div>
+            ) : null}
           </div>
         </main>
       </Layout>
