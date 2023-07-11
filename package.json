@@ -1,6 +1,11 @@
 {
-  "name": "clerk-t3-minimal",
+  "name": "wheel-of-life",
   "version": "0.1.0",
+  "description": "Simple wheel of life application",
+  "author": {
+    "name": "Leo Thesen",
+    "email": "leothesen@gmail.com"
+  },
   "private": true,
   "scripts": {
     "build": "next build",
@@ -25,6 +30,7 @@
     "next": "13.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.1",
     "react-svg-radar-chart": "^1.4.0",
     "superjson": "1.12.3",
     "zod": "^3.20.2"

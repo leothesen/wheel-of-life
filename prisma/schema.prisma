@@ -6,12 +6,33 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
+
 
 model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Entries {
+    id        String   @id @default(cuid())
+    userId    String
+    data      Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@index([userId])
+}
+
+model Values {
+    id        String   @id @default(cuid())
+    userId    String
+    values    String[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@index([userId])
 }
