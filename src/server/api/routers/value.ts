@@ -8,13 +8,12 @@ export const valueRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const test = ["hello", "world"];
 
-      await ctx.prisma.values.create({
+      return ctx.prisma.values.create({
         data: {
           values: test,
           userId: ctx.auth.userId,
         },
       });
-      return "Success"
     }),
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.values.findMany();

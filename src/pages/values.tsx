@@ -6,7 +6,7 @@ import { api } from "../utils/api";
 
 const Values: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [values, setValues] = useState(["test"]); // Add values state
+  const [values, setValues] = useState<string[]>(); // Add values state
 
   // const { mutate, isLoading } = api.games.create.useMutation();
   const { mutate } = api.value.create.useMutation();
@@ -21,22 +21,16 @@ const Values: NextPage = () => {
       mutate({ values: ["test"]}, {
         onSuccess: (data) => {
           console.log(data)
+          setValues(data.values);
+          setIsLoading(false);
         }
       })
-
-      // console.log(result)
-      // if (result.data){ 
-      //   // Map result.data to an array of strings
-      //   // const valuesArray = result.data.map((value) => value.userId);
-        
-      //   setValues([result.data.greeting]); // Update the values state with the API response}
-      // }
 
     } catch (error) {
       // Handle any error that occurred during the API request
     }
 
-    setIsLoading(false);
+    
   };
 
   return (
