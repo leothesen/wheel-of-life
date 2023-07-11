@@ -43,7 +43,7 @@ const Home: NextPage = () => {
         nature: 0.5,
         exercise: 0.2,
       },
-      meta: { color: "red" },
+      meta: { color: "green" },
       date: new Date(),
     },
   ]);
@@ -68,6 +68,8 @@ const Home: NextPage = () => {
         for (const key in newDataItem.data) {
           newDataItem.data[key] = Math.random();
         }
+        // Generate a random color in the format "#58FCEC"
+        newDataItem.meta.color = getRandomColor();
         return newDataItem;
       });
       setData(newData);
@@ -77,6 +79,14 @@ const Home: NextPage = () => {
       clearInterval(interval);
     };
   }, [data]);
+
+  // Function to generate a random color in the format "#58FCEC"
+  // Function to generate a random color from a predefined list
+  const getRandomColor = () => {
+    const colors = ["red", "green", "yellow", "blue", "orange"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  };
 
   return (
     <>
