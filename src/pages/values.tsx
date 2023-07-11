@@ -73,27 +73,26 @@ const Values: NextPage = () => {
           </h1>
 
           <div className="flex flex-col items-center gap-4">
-            {(isUserValuesLoading || isValuesLoading) ? (
-              <>
-                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
-                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
-                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
-                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
-                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
-              </>
-            ) : (
-              values.map((value, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  value={value}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  maxLength={25}
-                  className={`input input-bordered ${value.length > 25 ? "border-red-500" : ""}`}
-                  style={{ width: "200%" }}
-                />
-              ))
-            )}
+            {values.map((value, index) => (
+              <div
+                key={index}
+                className="flex justify-center"
+                style={{ width: "200%" }}
+              >
+                {(isUserValuesLoading || isValuesLoading) ? (
+                  <div className="input input-bordered animate-pulse" style={{ width: "100%" }}></div>
+                ) : (
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    maxLength={25}
+                    className={`input input-bordered ${value.length > 25 ? "border-red-500" : ""}`}
+                    style={{ width: "100%" }}
+                  />
+                )}
+              </div>
+            ))}
           </div>
 
           <div className="flex justify-center gap-4 w-full">
