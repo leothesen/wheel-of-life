@@ -7,12 +7,30 @@ import { api } from "../utils/api";
 const Values: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState<string[]>([]);
+  const [isValuesLoading, setIsValuesLoading] = useState(true);
 
   const { mutate } = api.value.create.useMutation();
+  const { data: userValues, isLoading: isUserValuesLoading } = api.value.getUserValues.useQuery();
 
   useEffect(() => {
     setValues(["", "", "", "", ""]); // Set initial values with 5 empty strings
   }, []);
+
+  useEffect(() => {
+    if (!isUserValuesLoading && userValues) {
+      console.log(userValues, "userValues")
+      if (userValues.values.length === 0) {
+        setValues(["", "", "", "", ""]);
+      } else {
+        setValues(userValues.values);
+      }
+      setIsValuesLoading(false);
+    }
+    if (!isUserValuesLoading && !userValues) {
+      setValues(["", "", "", "", ""]);
+      setIsValuesLoading(false);
+    }
+  }, [userValues, isUserValuesLoading]);
 
   const handleClick = async () => {
     setIsLoading(true);
@@ -55,17 +73,27 @@ const Values: NextPage = () => {
           </h1>
 
           <div className="flex flex-col items-center gap-4">
-            {values.map((value, index) => (
-              <input
-                key={index}
-                type="text"
-                value={value}
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                maxLength={25}
-                className={`input input-bordered ${value.length > 25 ? "border-red-500" : ""}`}
-                style={{ width: "200%" }}
-              />
-            ))}
+            {(isUserValuesLoading || isValuesLoading) ? (
+              <>
+                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
+                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
+                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
+                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
+                <div className="input input-bordered animate-pulse" style={{ width: "200%" }}></div>
+              </>
+            ) : (
+              values.map((value, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={value}
+                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  maxLength={25}
+                  className={`input input-bordered ${value.length > 25 ? "border-red-500" : ""}`}
+                  style={{ width: "200%" }}
+                />
+              ))
+            )}
           </div>
 
           <div className="flex justify-center gap-4 w-full">
