@@ -1,4 +1,6 @@
 import { type NextPage } from "next";
+import { useEffect, useState } from "react";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
@@ -11,8 +13,9 @@ import Layout from "../components/layout";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const { user } = useUser(); // Fetch the user object from Clerk
 
-  const data = [
+  const [data, setData] = useState([
     {
       data: {
         health: 0.9,
@@ -43,7 +46,7 @@ const Home: NextPage = () => {
       meta: { color: "red" },
       date: new Date(),
     },
-  ];
+  ]);
 
   const captions = {
     health: "Health",
@@ -57,6 +60,24 @@ const Home: NextPage = () => {
     exercise: "Exercise",
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Generate new random values for the data array
+      const newData = data.map((item) => {
+        const newDataItem = { ...item };
+        for (const key in newDataItem.data) {
+          newDataItem.data[key] = Math.random();
+        }
+        return newDataItem;
+      });
+      setData(newData);
+    }, 2000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [data]);
+
   return (
     <>
       <Head>
@@ -68,6 +89,7 @@ const Home: NextPage = () => {
         <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <RadarChart captions={captions} data={data} size={200} />
+            {!user ? <SignInButton /> : null}
           </div>
         </main>
       </Layout>
