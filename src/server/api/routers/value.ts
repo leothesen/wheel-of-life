@@ -6,11 +6,9 @@ export const valueRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ values: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      const test = ["hello", "world"];
-
       return ctx.prisma.values.create({
         data: {
-          values: test,
+          values: input.values,
           userId: ctx.auth.userId,
         },
       });
