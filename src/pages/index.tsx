@@ -66,7 +66,8 @@ const Home: NextPage = () => {
       const newData = data.map((item) => {
         const newDataItem = { ...item };
         for (const key in newDataItem.data) {
-          newDataItem.data[key] = Math.random();
+          const keyOfDataType = key as keyof typeof newDataItem.data;
+          newDataItem.data[keyOfDataType] = Math.random();
         }
         // Generate a random color in the format "#58FCEC"
         newDataItem.meta.color = getRandomColor();
@@ -78,14 +79,14 @@ const Home: NextPage = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [data]);
+}, [data]);
 
   // Function to generate a random color in the format "#58FCEC"
   // Function to generate a random color from a predefined list
   const getRandomColor = () => {
     const colors = ["red", "green", "yellow", "blue", "orange"];
     const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
+    return colors[randomIndex] || "blue";
   };
 
   return (
