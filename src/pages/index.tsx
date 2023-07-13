@@ -90,13 +90,8 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Wheel of Life</title>
-        <meta name="Wheel of Life app" content="For tracking and reflecting" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout>
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
+        <main className="flex min-h-screen flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <RadarChart captions={captions} data={data} size={200} />
             {!user ? (
