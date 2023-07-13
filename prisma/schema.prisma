@@ -6,12 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+    provider          = "postgresql"
+    url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
-
 
 model Example {
     id        String   @id @default(cuid())
@@ -25,14 +24,16 @@ model Entries {
     data      Json
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
     @@index([userId])
 }
 
 model Values {
     id        String   @id @default(cuid())
-    userId    String
+    userId    String   @unique
     values    String[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
     @@index([userId])
 }
