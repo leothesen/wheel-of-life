@@ -169,14 +169,14 @@ const Home: NextPage = () => {
                                 <label className="mb-2">{value}:</label>
                                 <input
                                   className="input-bordered input"
-                                  key={value}
+                                  key={index}
                                   {...register(`ratings.${index}.${value}`, { required: "Required" })}
                                 />
-                                {errors[value] && (
+                                {/* {errors && (
                                   <span className="mt-1 text-red-500">
-                                    {errors[value].message as React.ReactNode}
+                                    {errors.ratings.message as React.ReactNode}
                                   </span>
-                                )}
+                                )} */}
                               </div>
                             ))}
                         </div>
