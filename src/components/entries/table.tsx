@@ -33,7 +33,6 @@ export const Entries: React.FC<Props> = ({ data, captions }) => {
           {/* rows */}
           {data.map((entry, index) => (
             <tr key={index}>
-
               {/* Additional data */}
               <td>{entry.date.toString()}</td>
 

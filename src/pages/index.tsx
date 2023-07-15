@@ -1,19 +1,24 @@
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { UserButton } from "@clerk/nextjs";
-import Head from "next/head";
-import Link from "next/link";
 import RadarChart from "react-svg-radar-chart";
 import "react-svg-radar-chart/build/css/index.css";
 
 import { api } from "../utils/api";
-import { Entries } from "../components/entries";
+import { Entries } from "../components/entries/table";
 import Layout from "../components/layout";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const { user } = useUser(); // Fetch the user object from Clerk
+
+  if (user?.id) {
+    // If the user is signed in, route to /entries page
+    router.push("/entries");
+  }
+
 
   const [data, setData] = useState([
     {
