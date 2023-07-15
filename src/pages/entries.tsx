@@ -56,12 +56,7 @@ const Home: NextPage = () => {
         entry: {
           title: entry.title,
           notes: entry.notes,
-          ratings: [
-            {
-              value: "test",
-              rating: 8,
-            },
-          ],
+          ratings: entry.ratings
         },
       },
       {

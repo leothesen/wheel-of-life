@@ -9,12 +9,7 @@ export const entryRouter = createTRPCRouter({
         entry: z.object({
           title: z.string(),
           notes: z.string(),
-          ratings: z
-            .object({
-              value: z.string(),
-              rating: z.number(),
-            })
-            .array(),
+          ratings: z.record(z.string(), z.string()).array(),
         }),
       })
     )
@@ -24,7 +19,7 @@ export const entryRouter = createTRPCRouter({
           userId: ctx.auth.userId,
           title: input.entry.title,
           notes: input.entry.notes,
-          ratings: input.entry.ratings
+          ratings: input.entry.ratings,
         },
       });
     }),
