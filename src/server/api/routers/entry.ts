@@ -23,7 +23,14 @@ export const entryRouter = createTRPCRouter({
         },
       });
     }),
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.entries.findMany();
+  getUserEntries: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.entries.findMany({
+      where: {
+        userId: ctx.auth.userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
   }),
 });
