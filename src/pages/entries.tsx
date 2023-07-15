@@ -9,7 +9,7 @@ import { api } from "../utils/api";
 import { Entries } from "../components/entries/table";
 import Layout from "../components/layout";
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Loading } from "../components/loading";
 
 const Home: NextPage = () => {
@@ -20,11 +20,19 @@ const Home: NextPage = () => {
   const { mutate } = api.entry.create.useMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     handleSubmit,
+    control,
     register,
     formState: { errors },
   } = useForm();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control, // control props comes from useForm (optional: if you are using FormContext)
+      name: "ratings", // unique name for your Field Array
+    }
+  );
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -134,7 +142,7 @@ const Home: NextPage = () => {
                     <div className="modal-box">
                       <h2 className="text-xl">Add Entry</h2>
                       <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className="mt-4 flex flex-col items-start justify-center">
+                        <div className="mt-4 flex flex-col items-start justify-center">
                           <label className="mb-2">Title:</label>
                           <input
                             className="input-bordered input"
@@ -158,23 +166,26 @@ const Home: NextPage = () => {
                             </span>
                           )}
                         </div>
+                        {/* User values */}
                         <div className="flex flex-col items-start justify-center">
-                          {userValues && userValues.values.map((value, index) => (
-                            <div key={index} className="mt-4">
-                              <label className="mb-2">{value}:</label>
-                              <input
-                                className="input-bordered input"
-                                {...register(value, { required: "Required" })}
-                              />
-                              {errors[value] && (
-                                <span className="mt-1 text-red-500">
-                                  { errors[value].message as React.ReactNode}
-                                </span>
-                              )}
-                            </div>
-                          ))}
+                          {userValues &&
+                            userValues.values.map((value, index) => (
+                              <div key={index} className="mt-4">
+                                <label className="mb-2">{value}:</label>
+                                <input
+                                  className="input-bordered input"
+                                  key={value}
+                                  {...register(`ratings.${index}.value`, { required: "Required" })}
+                                  // {...register(`ratings.${index}.rating`, { required: "Required" })}
+                                />
+                                {errors[value] && (
+                                  <span className="mt-1 text-red-500">
+                                    {errors[value].message as React.ReactNode}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
                         </div>
-                        {/* ... add more fields as needed ... */}
                         <div className="mt-4 flex justify-center">
                           <button
                             type="submit"
