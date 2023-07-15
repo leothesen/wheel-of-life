@@ -175,8 +175,7 @@ const Home: NextPage = () => {
                                 <input
                                   className="input-bordered input"
                                   key={value}
-                                  {...register(`ratings.${index}.value`, { required: "Required" })}
-                                  // {...register(`ratings.${index}.rating`, { required: "Required" })}
+                                  {...register(`ratings.${index}.${value}`, { required: "Required" })}
                                 />
                                 {errors[value] && (
                                   <span className="mt-1 text-red-500">
