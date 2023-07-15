@@ -9,7 +9,7 @@ import { api } from "../utils/api";
 import { Entries } from "../components/entries/table";
 import Layout from "../components/layout";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Loading } from "../components/loading";
 
 const Home: NextPage = () => {
@@ -34,13 +34,8 @@ const Home: NextPage = () => {
     setIsModalOpen(false);
   };
 
-  const onSubmit =
-    async (entry: // TODO: Replace this type with the type of your entry object
-    {
-      title: string;
-      notes: string;
-      ratings: { value: string; rating: number }[];
-    }) => {
+  const onSubmit: SubmitHandler<FieldValues> =
+    async (entry) => {
       setIsEntryLoading(true);
       console.log("entry loading", isEntryLoading);
       // Here, call the mutation to create a new entry using your tRPC API
