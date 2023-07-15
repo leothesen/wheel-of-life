@@ -162,6 +162,7 @@ const Home: NextPage = () => {
                         <div className="mt-4 flex justify-center">
                           <button
                             type="submit"
+                            disabled={isEntryLoading}
                             className={`btn-primary btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
@@ -170,6 +171,7 @@ const Home: NextPage = () => {
                           </button>
                           <button
                             onClick={closeModal}
+                            disabled={isEntryLoading}
                             className={`btn-secondary btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
