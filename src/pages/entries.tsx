@@ -13,9 +13,11 @@ import { useForm } from "react-hook-form";
 import { Loading } from "../components/loading";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const [isEntryLoading, setIsEntryLoading] = useState(false);
+  const { data: userValues, isLoading: isValuesLoading } =
+    api.value.getUserValues.useQuery();
 
-  const { data: userValues, isLoading } = api.value.getUserValues.useQuery();
+  const { mutate } = api.entry.create.useMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
@@ -32,12 +34,48 @@ const Home: NextPage = () => {
     setIsModalOpen(false);
   };
 
-  const onSubmit = async (values) => {
-    // Here, call the mutation to create a new entry using your tRPC API
-    // After successful creation, close the modal and optionally refresh your data
-    // You'll need to properly setup and call your api.entry.create mutation here
-    closeModal();
-  };
+  const onSubmit =
+    async (entry: // TODO: Replace this type with the type of your entry object
+    {
+      title: string;
+      notes: string;
+      ratings: { value: string; rating: number }[];
+    }) => {
+      setIsEntryLoading(true);
+      console.log("entry loading", isEntryLoading);
+      // Here, call the mutation to create a new entry using your tRPC API
+      // After successful creation, close the modal and optionally refresh your data
+      // You'll need to properly setup and call your api.entry.create mutation here
+      // await mutate(values);
+      console.log(entry);
+      // set buttons to loading
+      mutate(
+        {
+          entry: {
+            title: entry.title,
+            notes: entry.notes,
+            ratings: [
+              {
+                value: "test",
+                rating: 8,
+              },
+            ],
+          },
+        },
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            setIsEntryLoading(false);
+            console.log("entry loading", isEntryLoading);
+            closeModal();
+          },
+          onError: (error) => {
+            setIsEntryLoading(false);
+            console.log(error);
+          },
+        }
+      );
+    };
 
   const data = [
     {
@@ -87,7 +125,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout>
-        {isLoading ? ( // Render skeleton loading when isLoading is true
+        {isValuesLoading ? ( // Render skeleton loading when isLoading is true
           <Loading />
         ) : (
           <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
@@ -109,7 +147,8 @@ const Home: NextPage = () => {
                             {...register("title", { required: "Required" })}
                           />
                         </label>
-                        {errors.title && errors.title.message}
+                        {errors.title &&
+                          (errors.title.message as React.ReactNode)}
                         <label>
                           Notes:
                           <input
@@ -117,13 +156,26 @@ const Home: NextPage = () => {
                             {...register("notes", { required: "Required" })}
                           />
                         </label>
-                        {errors.notes && errors.notes.message}
+                        {errors.notes &&
+                          (errors.notes.message as React.ReactNode)}
                         {/* ... add more fields as needed ... */}
                         <div className="modal-action">
-                          <button type="submit" className="btn">
+                          <button
+                            className={`btn-primary btn ${
+                              isEntryLoading ? "animate-pulse" : ""
+                            }`}
+                            type="submit"
+                            disabled={isEntryLoading}
+                          >
                             Submit
                           </button>
-                          <button onClick={closeModal} className="btn">
+                          <button
+                            className={`btn-secondary btn ${
+                              isEntryLoading ? "animate-pulse" : ""
+                            }`}
+                            onClick={closeModal}
+                            disabled={isEntryLoading}
+                          >
                             Close
                           </button>
                         </div>
