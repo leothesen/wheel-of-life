@@ -34,43 +34,42 @@ const Home: NextPage = () => {
     setIsModalOpen(false);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> =
-    async (entry) => {
-      setIsEntryLoading(true);
-      console.log("entry loading", isEntryLoading);
-      // Here, call the mutation to create a new entry using your tRPC API
-      // After successful creation, close the modal and optionally refresh your data
-      // You'll need to properly setup and call your api.entry.create mutation here
-      // await mutate(values);
-      console.log(entry);
-      // set buttons to loading
-      mutate(
-        {
-          entry: {
-            title: entry.title,
-            notes: entry.notes,
-            ratings: [
-              {
-                value: "test",
-                rating: 8,
-              },
-            ],
-          },
+  const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
+    setIsEntryLoading(true);
+    console.log("entry loading", isEntryLoading);
+    // Here, call the mutation to create a new entry using your tRPC API
+    // After successful creation, close the modal and optionally refresh your data
+    // You'll need to properly setup and call your api.entry.create mutation here
+    // await mutate(values);
+    console.log(entry);
+    // set buttons to loading
+    mutate(
+      {
+        entry: {
+          title: entry.title,
+          notes: entry.notes,
+          ratings: [
+            {
+              value: "test",
+              rating: 8,
+            },
+          ],
         },
-        {
-          onSuccess: (data) => {
-            console.log(data);
-            setIsEntryLoading(false);
-            console.log("entry loading", isEntryLoading);
-            closeModal();
-          },
-          onError: (error) => {
-            setIsEntryLoading(false);
-            console.log(error);
-          },
-        }
-      );
-    };
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          setIsEntryLoading(false);
+          console.log("entry loading", isEntryLoading);
+          closeModal();
+        },
+        onError: (error) => {
+          setIsEntryLoading(false);
+          console.log(error);
+        },
+      }
+    );
+  };
 
   const data = [
     {
@@ -135,41 +134,45 @@ const Home: NextPage = () => {
                     <div className="modal-box">
                       <h2 className="text-xl">Add Entry</h2>
                       <form onSubmit={handleSubmit(onSubmit)}>
-                        <label>
-                          Title:
+                        <div className="flex flex-col items-start justify-center">
+                          <label className="mb-2">Title:</label>
                           <input
                             className="input-bordered input"
                             {...register("title", { required: "Required" })}
                           />
-                        </label>
-                        {errors.title &&
-                          (errors.title.message as React.ReactNode)}
-                        <label>
-                          Notes:
+                          {errors.title && (
+                            <span className="mt-1 text-red-500">
+                              {errors.title.message as React.ReactNode}
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 flex flex-col items-start justify-center">
+                          <label className="mb-2">Notes:</label>
                           <input
                             className="input-bordered input"
                             {...register("notes", { required: "Required" })}
                           />
-                        </label>
-                        {errors.notes &&
-                          (errors.notes.message as React.ReactNode)}
+                          {errors.notes && (
+                            <span className="mt-1 text-red-500">
+                              {errors.notes.message as React.ReactNode}
+                            </span>
+                          )}
+                        </div>
                         {/* ... add more fields as needed ... */}
-                        <div className="modal-action">
+                        <div className="mt-4 flex justify-center">
                           <button
+                            type="submit"
                             className={`btn-primary btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
-                            type="submit"
-                            disabled={isEntryLoading}
                           >
                             Submit
                           </button>
                           <button
+                            onClick={closeModal}
                             className={`btn-secondary btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
-                            onClick={closeModal}
-                            disabled={isEntryLoading}
                           >
                             Close
                           </button>
