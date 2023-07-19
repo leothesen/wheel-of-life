@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
-import { UserButton } from "@clerk/nextjs";
 import { api } from "../utils/api";
 import Layout from "../components/layout";
+import { UserValues } from "@prisma/client";
 
 const Values: NextPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [values, setValues] = useState<string[]>([]);
+  const [values, setValues] = useState<string[]>(["", "", "", "", ""]);
+  const [userValues, setUserValues] = useState<string[]>([]);
   const [isValuesLoading, setIsValuesLoading] = useState(true);
 
+  
   const { mutate } = api.value.create.useMutation();
-  const { data: userValues, isLoading: isUserValuesLoading } =
-    api.value.getUserValues.useQuery();
-
+  const { data: userValueData, isLoading: isUserValuesLoading } =
+  api.value.getUserValues.useQuery();
+  
   useEffect(() => {
-    setValues(["", "", "", "", ""]); // Set initial values with 5 empty strings
-  }, []);
+    if (userValueData) {
+      setUserValues(userValueData.map((userValue: UserValues) => userValue.value));
+      console.log(userValueData)
+    }
+  }, [isUserValuesLoading]);
 
   useEffect(() => {
     if (!isUserValuesLoading && userValues) {
-      console.log(userValues, "userValues");
-      if (userValues.values.length === 0) {
+      console.log(userValues);
+      if (userValues.length === 0) {
         setValues(["", "", "", "", ""]);
       } else {
-        setValues(userValues.values);
+        setValues(userValues);
       }
       setIsValuesLoading(false);
     }
@@ -41,9 +46,13 @@ const Values: NextPage = () => {
         { values },
         {
           onSuccess: (data) => {
-            setValues(data.values);
+            setValues(data);
             setIsLoading(false);
           },
+          onError: (error) => {
+            console.log(error);
+            setIsLoading(false);
+          }
         }
       );
     } catch (error) {

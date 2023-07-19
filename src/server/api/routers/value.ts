@@ -6,30 +6,32 @@ export const valueRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ values: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      return ctx.prisma.values.upsert({
-        where: {
-          userId: ctx.auth.userId,
-        },
-        update: {
-          values: input.values,
-        },
-        create: {
-          values: input.values,
-          userId: ctx.auth.userId,
-        },
+      const valuesToSave = input.values.map((value) => ({
+        value,
+        userId: ctx.auth.userId,
+      }));
+
+      console.log(valuesToSave)
+
+      await ctx.prisma.userValues.createMany({
+        data: valuesToSave,
+        skipDuplicates: true,
       });
+
+      return input.values
     }),
+
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.values.findMany();
+    return ctx.prisma.userValues.findMany();
   }),
 
   getUserValues: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.values.findFirst({
+    return ctx.prisma.userValues.findMany({
       where: {
         userId: ctx.auth.userId,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
   }),

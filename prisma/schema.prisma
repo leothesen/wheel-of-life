@@ -19,23 +19,32 @@ model Example {
 }
 
 model Entries {
-    id        String   @id @default(cuid())
+    id        String         @id @default(cuid())
     userId    String
     title     String
     notes     String
-    ratings   Json[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    ratings   EntryRatings[]
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
 
     @@index([userId])
 }
 
-model Values {
+model EntryRatings {
     id        String   @id @default(cuid())
-    userId    String   @unique
-    values    String[]
+    entry     Entries  @relation(fields: [entryId], references: [id])
+    entryId   String
+    rating    Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model UserValues {
+    id          String   @id @default(cuid())
+    userId      String
+    value       String  @unique
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
     @@index([userId])
 }
