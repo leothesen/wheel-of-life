@@ -19,18 +19,37 @@ import { Loading } from "../components/loading";
 import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  /** Functional components */
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    handleSubmit,
+    control,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control, // control props comes from useForm (optional: if you are using FormContext)
+      name: "ratings", // unique name for your Field Array
+    }
+  );
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  /** User values */
   const [userValues, setUserValues] = useState<string[]>([]);
   const {
     data: userValuesResult,
     isLoading: isUserValuesLoading,
     isInitialLoading,
   } = api.value.getUserValues.useQuery();
-  const [isEntryLoading, setIsEntryLoading] = useState(false);
-
-  const { mutate } = api.entry.create.useMutation();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!isUserValuesLoading && userValuesResult) {
@@ -41,36 +60,11 @@ const Home: NextPage = () => {
     // TODO: Redirect to /values if user has no values
   }, [isUserValuesLoading]);
 
-  const {
-    handleSubmit,
-    control,
-    register,
-    formState: { errors },
-  } = useForm();
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "ratings", // unique name for your Field Array
-    }
-  );
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+  /** User Entry */
+  const [isEntryLoading, setIsEntryLoading] = useState(false);
+  const { mutate } = api.entry.create.useMutation();
   const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
     setIsEntryLoading(true);
-    console.log("entry loading", isEntryLoading);
-    // Here, call the mutation to create a new entry using your tRPC API
-    // After successful creation, close the modal and optionally refresh your data
-    // You'll need to properly setup and call your api.entry.create mutation here
-    // await mutate(values);
-    console.log(entry);
-    // set buttons to loading
     mutate(
       {
         entry: {
@@ -83,12 +77,11 @@ const Home: NextPage = () => {
         onSuccess: (data) => {
           console.log(data);
           setIsEntryLoading(false);
-          console.log("entry loading", isEntryLoading);
           closeModal();
+          reset()
         },
         onError: (error) => {
           setIsEntryLoading(false);
-          console.log(error);
         },
       }
     );
@@ -106,9 +99,10 @@ const Home: NextPage = () => {
               <button className="btn-primary btn" onClick={openModal}>
                 Add entry
               </button>
+              {/* Modal */}
               {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center">
-                  <div className="modal modal-open">
+                  <div className="modal-open modal">
                     <div className="modal-box">
                       <h2 className="text-xl">Add Entry</h2>
                       <form onSubmit={handleSubmit(onSubmit)}>

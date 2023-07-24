@@ -14,7 +14,6 @@ export const entryRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log(input)
       // Create the entry
       const entry = await ctx.prisma.entries.create({
         data: {
@@ -30,13 +29,17 @@ export const entryRouter = createTRPCRouter({
           userId: ctx.auth.userId,
         },
       });
-      if (!userValues ||  userValues.length === 0) throw new Error("User has no values"); // shem
+      if (!userValues || userValues.length === 0)
+        throw new Error("User has no values"); // shem
 
       // Map the ratings to a user value
       const mappedRatings = input.entry.ratings.map((rating) => {
-        let userValue = userValues.find((userValue) => userValue.value === Object.keys(rating)[0]);
-        
-        if (!userValue) throw new Error("User has no value for " + Object.keys(rating)[0]);
+        let userValue = userValues.find(
+          (userValue) => userValue.value === Object.keys(rating)[0]
+        );
+
+        if (!userValue)
+          throw new Error("User has no value for " + Object.keys(rating)[0]);
 
         const score = rating[userValue.value];
 
@@ -45,16 +48,15 @@ export const entryRouter = createTRPCRouter({
           entryId: entry.id,
           userValueId: userValue.id,
           rating: parseInt(score || "0"),
-        }
+        };
 
         return mappedRating;
-      })
+      });
 
       // Create the ratings
       await ctx.prisma.entryRatings.createMany({
-        data: mappedRatings
-      })
-
+        data: mappedRatings,
+      });
     }),
   getUserEntries: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.entries.findMany({
