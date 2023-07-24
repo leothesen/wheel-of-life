@@ -3,8 +3,10 @@ import { NextPage } from "next";
 import { api } from "../utils/api";
 import Layout from "../components/layout";
 import { UserValues } from "@prisma/client";
+import { useRouter } from "next/router";
 
 const Values: NextPage = () => {
+  const router = useRouter();
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isValuesLoading, setIsValuesLoading] = useState(true);
   const [values, setValues] = useState<string[]>(["", "", "", "", ""]);
@@ -51,6 +53,7 @@ const Values: NextPage = () => {
             setValues(data);
             setSubmitError(null);
             setIsSubmitLoading(false);
+            router.push("/entries");
           },
           onError: (error) => {
             console.log(error);
