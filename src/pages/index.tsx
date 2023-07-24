@@ -1,11 +1,10 @@
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import RadarChart from "react-svg-radar-chart";
+import { RadarGraph } from "../components/radarChart";
 import "react-svg-radar-chart/build/css/index.css";
 
 import { api } from "../utils/api";
-import { Entries } from "../components/entries/table";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
 
@@ -99,7 +98,7 @@ const Home: NextPage = () => {
       <Layout>
         <main className="flex min-h-screen flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <RadarChart captions={captions} data={data} size={200} />
+            <RadarGraph values={captions} data={data} size={200} />
             {!user ? (
               <div className="hover:bg-primary-dark rounded-md bg-primary px-4 py-2 text-white transition-all duration-200 ease-in-out">
                 <SignInButton

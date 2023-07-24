@@ -2,24 +2,44 @@ import { type NextPage } from "next";
 import { UserButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import RadarChart from "react-svg-radar-chart";
+import { RadarGraph } from "../components/radarChart";
 import "react-svg-radar-chart/build/css/index.css";
 
 import { api } from "../utils/api";
 import { EntriesTable } from "../components/entries/table";
 import Layout from "../components/layout";
-import { useState } from "react";
-import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import {
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { Loading } from "../components/loading";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const [userValues, setUserValues] = useState<string[]>([]);
+  const {
+    data: userValuesResult,
+    isLoading: isUserValuesLoading,
+    isInitialLoading,
+  } = api.value.getUserValues.useQuery();
   const [isEntryLoading, setIsEntryLoading] = useState(false);
-  const { data: userValues, isLoading: isValuesLoading } =
-    api.value.getUserValues.useQuery();
 
   const { mutate } = api.entry.create.useMutation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isUserValuesLoading && userValuesResult) {
+      const mappedValues = userValuesResult.map((value) => value.value);
+      setUserValues(mappedValues);
+    }
+
+    // TODO: Redirect to /values if user has no values
+  }, [isUserValuesLoading]);
 
   const {
     handleSubmit,
@@ -56,7 +76,7 @@ const Home: NextPage = () => {
         entry: {
           title: entry.title,
           notes: entry.notes,
-          ratings: entry.ratings
+          ratings: entry.ratings,
         },
       },
       {
@@ -74,60 +94,15 @@ const Home: NextPage = () => {
     );
   };
 
-  const data = [
-    {
-      data: {
-        health: 0.9,
-        sleep: 0.2,
-        food: 0.2,
-        emotionalIntelligence: 0.6,
-        personalDevelopment: 0.9,
-        work: 0.2,
-        relationships: 0.4,
-        nature: 0.5,
-        exercise: 0.2,
-      },
-      meta: { color: "blue" },
-      date: new Date(),
-    },
-    {
-      data: {
-        health: 0.9,
-        sleep: 0.2,
-        food: 0.2,
-        emotionalIntelligence: 0.6,
-        personalDevelopment: 0.9,
-        work: 0.2,
-        relationships: 0.4,
-        nature: 0.5,
-        exercise: 0.2,
-      },
-      meta: { color: "red" },
-      date: new Date(),
-    },
-  ];
-
-  const captions = {
-    health: "Health",
-    sleep: "Sleep",
-    food: "Food",
-    emotionalIntelligence: "Emotional intelligence",
-    personalDevelopment: "Personal development",
-    work: "Work",
-    relationships: "Relationships",
-    nature: "Nature",
-    exercise: "Exercise",
-  };
-
   return (
     <>
       <Layout>
-        {isValuesLoading ? ( // Render skeleton loading when isLoading is true
+        {isUserValuesLoading ? ( // Render skeleton loading when isLoading is true
           <Loading />
         ) : (
           <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-              <RadarChart captions={captions} data={data} size={700} />
+              <RadarGraph size={700} />
               <button className="btn-primary btn" onClick={openModal}>
                 Add entry
               </button>
@@ -170,7 +145,9 @@ const Home: NextPage = () => {
                                 <input
                                   className="input-bordered input"
                                   key={index}
-                                  {...register(`ratings.${index}.${value}`, { required: "Required" })}
+                                  {...register(`ratings.${index}.${value}`, {
+                                    required: "Required",
+                                  })}
                                 />
                                 {/* {errors && (
                                   <span className="mt-1 text-red-500">
@@ -205,7 +182,7 @@ const Home: NextPage = () => {
                   </div>
                 </div>
               )}
-              <EntriesTable data={data} captions={captions} />
+              {/* <EntriesTable data={data} captions={captions} /> */}
             </div>
           </main>
         )}
