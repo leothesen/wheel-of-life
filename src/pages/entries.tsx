@@ -100,7 +100,7 @@ const Home: NextPage = () => {
         {isUserValuesLoading ? ( // Render skeleton loading when isLoading is true
           <Loading />
         ) : (
-          <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
+          <main className="flex min-h-screen flex-col items-center justify-center">
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
               <RadarGraph size={700} />
               <button className="btn-primary btn" onClick={openModal}>

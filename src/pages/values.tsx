@@ -80,7 +80,7 @@ const Values: NextPage = () => {
   return (
     <>
       <Layout>
-        <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
+        <main className="flex min-h-screen items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
             <div className="flex flex-col items-center gap-4">
               {values.map((value, index) => (
