@@ -139,7 +139,7 @@ const Home: NextPage = () => {
                         {/* User values */}
                         <div className="flex flex-col items-start justify-center">
                           {userValues &&
-                            userValues.values.map((value, index) => (
+                            userValues.map((value, index) => (
                               <div key={index} className="mt-4">
                                 <label className="mb-2">{value}:</label>
                                 <input

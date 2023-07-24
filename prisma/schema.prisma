@@ -32,6 +32,7 @@ model Entries {
 
 model EntryRatings {
     id          String     @id @default(cuid())
+    userId      String
     entry       Entries    @relation(fields: [entryId], references: [id])
     entryId     String
     userValue   UserValues @relation(fields: [userValueId], references: [id])
