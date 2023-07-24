@@ -6,7 +6,7 @@ import RadarChart from "react-svg-radar-chart";
 import "react-svg-radar-chart/build/css/index.css";
 
 import { api } from "../utils/api";
-import { Entries } from "../components/entries/table";
+import { EntriesTable } from "../components/entries/table";
 import Layout from "../components/layout";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
                   </div>
                 </div>
               )}
-              <Entries data={data} captions={captions} />
+              <EntriesTable data={data} captions={captions} />
             </div>
           </main>
         )}

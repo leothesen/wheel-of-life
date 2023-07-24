@@ -5,10 +5,12 @@ import Layout from "../components/layout";
 import { UserValues } from "@prisma/client";
 
 const Values: NextPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+  const [isValuesLoading, setIsValuesLoading] = useState(true);
   const [values, setValues] = useState<string[]>(["", "", "", "", ""]);
   const [userValues, setUserValues] = useState<string[]>([]);
-  const [isValuesLoading, setIsValuesLoading] = useState(true);
+
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   
   const { mutate } = api.value.create.useMutation();
@@ -39,7 +41,7 @@ const Values: NextPage = () => {
   }, [userValues, isUserValuesLoading]);
 
   const handleClick = async () => {
-    setIsLoading(true);
+    setIsSubmitLoading(true);
 
     try {
       mutate(
@@ -47,11 +49,13 @@ const Values: NextPage = () => {
         {
           onSuccess: (data) => {
             setValues(data);
-            setIsLoading(false);
+            setSubmitError(null);
+            setIsSubmitLoading(false);
           },
           onError: (error) => {
             console.log(error);
-            setIsLoading(false);
+            setSubmitError("Unable to submit values.");
+            setIsSubmitLoading(false);
           }
         }
       );
@@ -103,21 +107,26 @@ const Values: NextPage = () => {
               ))}
             </div>
 
+            {/* An error warning in red text */}
+            {submitError && (
+              <div className="text-red-500 text-center">{submitError}</div>
+            )}
+
             <div className="flex w-full justify-center gap-4">
               <button
                 className={`btn-primary btn ${
-                  isLoading ? "animate-pulse" : ""
+                  isSubmitLoading ? "animate-pulse" : ""
                 }`}
                 onClick={handleClick}
-                disabled={isLoading}
+                disabled={isSubmitLoading}
               >
-                {isLoading ? "Loading..." : "Submit"}
+                {isSubmitLoading ? "Loading..." : "Submit"}
               </button>
 
               <button
                 className="btn-secondary btn"
                 onClick={handleAddInput}
-                disabled={isLoading}
+                disabled={isSubmitLoading}
               >
                 Add Input
               </button>

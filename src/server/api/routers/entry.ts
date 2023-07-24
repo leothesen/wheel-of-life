@@ -9,19 +9,29 @@ export const entryRouter = createTRPCRouter({
         entry: z.object({
           title: z.string(),
           notes: z.string(),
-          ratings: z.record(z.string(), z.string()).array(),
+          ratings: z.record(z.string(), z.string(), z.string()).array(),
         }),
       })
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.entries.create({
+    .mutation(async ({ ctx, input }) => {
+      console.log(input)
+      const entry = await ctx.prisma.entries.create({
         data: {
           userId: ctx.auth.userId,
           title: input.entry.title,
           notes: input.entry.notes,
-          ratings: input.entry.ratings,
         },
       });
+
+      await ctx.prisma.entryRatings.createMany({
+        data: input.entry.ratings.map((rating) => ({
+          userId: ctx.auth.userId,
+          entryId: entry.id,
+          rating: rating.value,
+          userValueId: rating.valueId,
+        })),
+      });
+
     }),
   getUserEntries: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.entries.findMany({
