@@ -1,7 +1,9 @@
 {
     "conventionalCommits.scopes": [
         "Codebase",
-        "Wheel"
+        "Wheel",
+        "Entry",
+        "Value"
     ],
     "cSpell.words": [
         "daisyui",

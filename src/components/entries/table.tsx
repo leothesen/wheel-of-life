@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export const Entries: React.FC<Props> = ({ data, captions }) => {
+export const EntriesTable: React.FC<Props> = ({ data, captions }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -33,7 +33,6 @@ export const Entries: React.FC<Props> = ({ data, captions }) => {
           {/* rows */}
           {data.map((entry, index) => (
             <tr key={index}>
-
               {/* Additional data */}
               <td>{entry.date.toString()}</td>
 
