@@ -17,6 +17,7 @@ import {
 } from "react-hook-form";
 import { Loading } from "../components/loading";
 import { useRouter } from "next/router";
+import { EntryRatings } from "@prisma/client";
 
 const Home: NextPage = () => {
   /** Functional components */
@@ -45,11 +46,8 @@ const Home: NextPage = () => {
 
   /** User values */
   const [userValues, setUserValues] = useState<string[]>([]);
-  const {
-    data: userValuesResult,
-    isLoading: isUserValuesLoading,
-    isInitialLoading,
-  } = api.value.getUserValues.useQuery();
+  const { data: userValuesResult, isLoading: isUserValuesLoading } =
+    api.value.getUserValues.useQuery();
 
   useEffect(() => {
     if (!isUserValuesLoading && userValuesResult) {
@@ -63,6 +61,8 @@ const Home: NextPage = () => {
   /** User Entry */
   const [isEntryLoading, setIsEntryLoading] = useState(false);
   const { mutate } = api.entry.create.useMutation();
+
+  /** Handle form submission */
   const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
     setIsEntryLoading(true);
     mutate(
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
           console.log(data);
           setIsEntryLoading(false);
           closeModal();
-          reset()
+          reset();
         },
         onError: (error) => {
           setIsEntryLoading(false);
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
                     <div className="modal-box">
                       <h2 className="text-xl">Add Entry</h2>
                       <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="mt-4 flex flex-col items-start justify-center">
+                        <div className="mt-4 flex flex-col justify-center">
                           <label className="mb-2">Title:</label>
                           <input
                             className="input-bordered input"
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
                             </span>
                           )}
                         </div>
-                        <div className="mt-4 flex flex-col items-start justify-center">
+                        <div className="mt-4 flex flex-col justify-center">
                           <label className="mb-2">Notes:</label>
                           <input
                             className="input-bordered input"
@@ -131,31 +131,32 @@ const Home: NextPage = () => {
                           )}
                         </div>
                         {/* User values */}
-                        <div className="flex flex-col items-start justify-center">
+                        <div className="flex flex-col justify-center">
                           {userValues &&
                             userValues.map((value, index) => (
                               <div key={index} className="mt-4">
                                 <label className="mb-2">{value}:</label>
+                                {/* Todo: change this to a slider */}
                                 <input
-                                  className="input-bordered input"
+                                  type="range"
+                                  min={0}
+                                  max="10"
+                                  // value="0"
+                                  className="range range-primary"
                                   key={index}
+                                  // onClick={() => console.log("clicked")}
                                   {...register(`ratings.${index}.${value}`, {
                                     required: "Required",
                                   })}
                                 />
-                                {/* {errors && (
-                                  <span className="mt-1 text-red-500">
-                                    {errors.ratings.message as React.ReactNode}
-                                  </span>
-                                )} */}
                               </div>
                             ))}
                         </div>
-                        <div className="mt-4 flex justify-center">
+                        <div className="join mt-4 flex justify-center">
                           <button
                             type="submit"
                             disabled={isEntryLoading}
-                            className={`btn-primary btn ${
+                            className={`btn-primary join-item btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
                           >
@@ -164,7 +165,7 @@ const Home: NextPage = () => {
                           <button
                             onClick={closeModal}
                             disabled={isEntryLoading}
-                            className={`btn-secondary btn ${
+                            className={`btn-secondary join-item btn ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
                           >

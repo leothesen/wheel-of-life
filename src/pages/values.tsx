@@ -4,6 +4,7 @@ import { api } from "../utils/api";
 import Layout from "../components/layout";
 import { UserValues } from "@prisma/client";
 import { useRouter } from "next/router";
+import { Loading } from "../components/loading";
 
 const Values: NextPage = () => {
   const router = useRouter();
@@ -14,15 +15,16 @@ const Values: NextPage = () => {
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  
   const { mutate } = api.value.create.useMutation();
   const { data: userValueData, isLoading: isUserValuesLoading } =
-  api.value.getUserValues.useQuery();
-  
+    api.value.getUserValues.useQuery();
+
   useEffect(() => {
     if (userValueData) {
-      setUserValues(userValueData.map((userValue: UserValues) => userValue.value));
-      console.log(userValueData)
+      setUserValues(
+        userValueData.map((userValue: UserValues) => userValue.value)
+      );
+      console.log(userValueData);
     }
   }, [isUserValuesLoading]);
 
@@ -59,7 +61,7 @@ const Values: NextPage = () => {
             console.log(error);
             setSubmitError("Unable to submit values.");
             setIsSubmitLoading(false);
-          }
+          },
         }
       );
     } catch (error) {
@@ -80,7 +82,9 @@ const Values: NextPage = () => {
   return (
     <>
       <Layout>
-        <main className="flex min-h-screen items-center justify-center">
+        {isValuesLoading ? (
+          <Loading />
+        ) : (<main className="flex min-h-screen items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
             <div className="flex flex-col items-center gap-4">
               {values.map((value, index) => (
@@ -89,35 +93,28 @@ const Values: NextPage = () => {
                   className="flex justify-center"
                   style={{ width: "200%" }}
                 >
-                  {isUserValuesLoading || isValuesLoading ? (
-                    <input
-                      className="input-bordered input animate-pulse"
-                      style={{ width: "100%" }}
-                    ></input>
-                  ) : (
-                    <input
-                      type="text"
-                      value={value}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      maxLength={25}
-                      className={`input-bordered input ${
-                        value.length > 24 ? "border-red-500" : ""
-                      }`}
-                      style={{ width: "100%" }}
-                    />
-                  )}
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    maxLength={25}
+                    className={`input-bordered input ${
+                      value.length > 24 ? "border-red-500" : ""
+                    }`}
+                    style={{ width: "100%" }}
+                  />
                 </div>
               ))}
             </div>
 
             {/* An error warning in red text */}
             {submitError && (
-              <div className="text-red-500 text-center">{submitError}</div>
+              <div className="text-center text-red-500">{submitError}</div>
             )}
 
-            <div className="flex w-full justify-center gap-4">
+            <div className="join flex w-full justify-center">
               <button
-                className={`btn-primary btn ${
+                className={`btn-primary join-item btn ${
                   isSubmitLoading ? "animate-pulse" : ""
                 }`}
                 onClick={handleClick}
@@ -127,7 +124,7 @@ const Values: NextPage = () => {
               </button>
 
               <button
-                className="btn-secondary btn"
+                className="btn-secondary join-item btn"
                 onClick={handleAddInput}
                 disabled={isSubmitLoading}
               >
@@ -135,7 +132,7 @@ const Values: NextPage = () => {
               </button>
             </div>
           </div>
-        </main>
+        </main>)}
       </Layout>
     </>
   );

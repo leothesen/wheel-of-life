@@ -24,9 +24,6 @@ const Home: NextPage = () => {
       data: {
         health: 0.9,
         sleep: 0.2,
-        food: 0.2,
-        emotionalIntelligence: 0.6,
-        personalDevelopment: 0.9,
         work: 0.2,
         relationships: 0.4,
         nature: 0.5,
@@ -39,9 +36,6 @@ const Home: NextPage = () => {
       data: {
         health: 0.9,
         sleep: 0.2,
-        food: 0.2,
-        emotionalIntelligence: 0.6,
-        personalDevelopment: 0.9,
         work: 0.2,
         relationships: 0.4,
         nature: 0.5,
@@ -55,9 +49,6 @@ const Home: NextPage = () => {
   const captions = {
     health: "Health",
     sleep: "Sleep",
-    food: "Food",
-    emotionalIntelligence: "Emotional intelligence",
-    personalDevelopment: "Personal development",
     work: "Work",
     relationships: "Relationships",
     nature: "Nature",
