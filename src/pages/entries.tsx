@@ -17,6 +17,7 @@ import {
 } from "react-hook-form";
 import { Loading } from "../components/loading";
 import { useRouter } from "next/router";
+import { EntryRatings } from "@prisma/client"
 
 const Home: NextPage = () => {
   /** Functional components */
@@ -48,7 +49,6 @@ const Home: NextPage = () => {
   const {
     data: userValuesResult,
     isLoading: isUserValuesLoading,
-    isInitialLoading,
   } = api.value.getUserValues.useQuery();
 
   useEffect(() => {
@@ -63,6 +63,8 @@ const Home: NextPage = () => {
   /** User Entry */
   const [isEntryLoading, setIsEntryLoading] = useState(false);
   const { mutate } = api.entry.create.useMutation();
+
+  /** Handle form submission */
   const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
     setIsEntryLoading(true);
     mutate(
@@ -136,6 +138,7 @@ const Home: NextPage = () => {
                             userValues.map((value, index) => (
                               <div key={index} className="mt-4">
                                 <label className="mb-2">{value}:</label>
+                                {/* Todo: change this to a slider */}
                                 <input
                                   className="input-bordered input"
                                   key={index}
@@ -151,11 +154,11 @@ const Home: NextPage = () => {
                               </div>
                             ))}
                         </div>
-                        <div className="mt-4 flex justify-center">
+                        <div className="join mt-4 flex justify-center">
                           <button
                             type="submit"
                             disabled={isEntryLoading}
-                            className={`btn-primary btn ${
+                            className={`btn-primary btn join-item ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
                           >
@@ -164,7 +167,7 @@ const Home: NextPage = () => {
                           <button
                             onClick={closeModal}
                             disabled={isEntryLoading}
-                            className={`btn-secondary btn ${
+                            className={`btn-secondary btn join-item ${
                               isEntryLoading ? "animate-pulse" : ""
                             }`}
                           >

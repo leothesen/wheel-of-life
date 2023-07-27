@@ -115,9 +115,9 @@ const Values: NextPage = () => {
               <div className="text-red-500 text-center">{submitError}</div>
             )}
 
-            <div className="flex w-full justify-center gap-4">
+            <div className="join flex w-full justify-center">
               <button
-                className={`btn-primary btn ${
+                className={`btn-primary btn join-item ${
                   isSubmitLoading ? "animate-pulse" : ""
                 }`}
                 onClick={handleClick}
@@ -127,7 +127,7 @@ const Values: NextPage = () => {
               </button>
 
               <button
-                className="btn-secondary btn"
+                className="btn-secondary btn join-item"
                 onClick={handleAddInput}
                 disabled={isSubmitLoading}
               >
