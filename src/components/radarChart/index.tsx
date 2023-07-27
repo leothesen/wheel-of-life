@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import RadarChart from "react-svg-radar-chart";
 
 const mockData = [
@@ -56,5 +57,28 @@ export const RadarGraph: React.FC<Props> = ({
   values = mockValues,
   size = 700,
 }) => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Calculate the size based on breakpoint
+  if (screenWidth < 480) {
+    size = 300;
+  } else if (screenWidth < 768) {
+    size = 500;
+  } else if (screenWidth < 1024) {
+    size = 700;
+  } // Add more breakpoints as needed
+
   return <RadarChart captions={values} data={data} size={size} />;
 };
