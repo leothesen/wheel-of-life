@@ -1,6 +1,6 @@
 export const Loading: React.FC = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#000000] to-[#000000]">
+    <main className="flex min-h-screen flex-col items-center justify-center">
       <div className="container flex items-center justify-center gap-12 px-4 py-16 ">
         <span className="loading loading-spinner text-primary"></span>
         <span className="loading loading-spinner text-secondary"></span>
