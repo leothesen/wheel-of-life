@@ -22,24 +22,24 @@ const Home: NextPage = () => {
   const [data, setData] = useState([
     {
       data: {
-        health: 0.9,
-        sleep: 0.2,
-        work: 0.2,
-        relationships: 0.4,
-        nature: 0.5,
-        exercise: 0.2,
+        your: 0.9,
+        whole: 0.2,
+        life: 0.2,
+        in: 0.4,
+        a: 0.5,
+        circle: 0.2,
       },
       meta: { color: "blue" },
       date: new Date(),
     },
     {
       data: {
-        health: 0.9,
-        sleep: 0.2,
-        work: 0.2,
-        relationships: 0.4,
-        nature: 0.5,
-        exercise: 0.2,
+        your: 0.9,
+        whole: 0.2,
+        life: 0.2,
+        in: 0.4,
+        a: 0.5,
+        circle: 0.2,
       },
       meta: { color: "green" },
       date: new Date(),
@@ -47,12 +47,12 @@ const Home: NextPage = () => {
   ]);
 
   const captions = {
-    health: "Health",
-    sleep: "Sleep",
-    work: "Work",
-    relationships: "Relationships",
-    nature: "Nature",
-    exercise: "Exercise",
+    your: "your",
+    whole: "whole",
+    life: "life",
+    in: "in",
+    a: "a",
+    circle: "circle",
   };
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
       <Layout>
         <main className="flex min-h-screen flex-col items-center justify-center">
           <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <RadarGraph values={captions} data={data} size={200} />
+            <RadarGraph values={captions} data={data} />
             {!user ? (
               <div className="hover:bg-primary-dark rounded-md bg-primary px-4 py-2 text-white transition-all duration-200 ease-in-out">
                 <SignInButton

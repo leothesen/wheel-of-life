@@ -17,7 +17,8 @@ import {
 } from "react-hook-form";
 import { Loading } from "../components/loading";
 import { useRouter } from "next/router";
-import { EntryRatings } from "@prisma/client";
+import { Entries, EntryRatings, UserValues } from "@prisma/client";
+import { Captions, Data } from "../server/domains/wheel/wheel.interface";
 
 const Home: NextPage = () => {
   /** Functional components */
@@ -62,6 +63,24 @@ const Home: NextPage = () => {
   const [isEntryLoading, setIsEntryLoading] = useState(false);
   const { mutate } = api.entry.create.useMutation();
 
+  /** Wheel */
+  const [wheel, setWheel] = useState<{
+    data: {
+      data: Data,
+      meta: { color: string };
+      date: Date;
+    }[]
+    captions: Captions;
+}>(null as any);
+  const { data: wheelResult, isLoading: isWheelLoading, refetch: refetchWheel } = api.wheel.getWheel.useQuery();
+
+  useEffect(() => {
+    if (!isWheelLoading && wheelResult) {
+      if (wheelResult) setWheel(wheelResult);
+    }
+  }
+  , [isWheelLoading]);
+
   /** Handle form submission */
   const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
     setIsEntryLoading(true);
@@ -74,8 +93,8 @@ const Home: NextPage = () => {
         },
       },
       {
-        onSuccess: (data) => {
-          console.log(data);
+        onSuccess: async (data) => {
+          await refetchWheel();
           setIsEntryLoading(false);
           closeModal();
           reset();
@@ -90,12 +109,12 @@ const Home: NextPage = () => {
   return (
     <>
       <Layout>
-        {isUserValuesLoading ? ( // Render skeleton loading when isLoading is true
+        {isUserValuesLoading || isWheelLoading ? ( // Render skeleton loading when isLoading is true
           <Loading />
         ) : (
           <main className="flex min-h-screen flex-col items-center justify-center">
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-              <RadarGraph size={700} />
+              <RadarGraph size={700} data={wheelResult?.data} values={wheelResult?.captions} />
               <button className="btn-primary btn" onClick={openModal}>
                 Add entry
               </button>
