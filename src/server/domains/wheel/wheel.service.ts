@@ -19,6 +19,13 @@ export const mapWheelData = (
       }
     });
 
+    // Account for new values added after the entry was created
+    values.forEach((value) => {
+      if (!data[value.value]) {
+        data[value.value] = 0;
+      }
+    });
+
     return {
       data,
       meta: { color: "blue" },
