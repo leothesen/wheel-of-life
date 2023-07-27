@@ -63,6 +63,24 @@ const Home: NextPage = () => {
   const [isEntryLoading, setIsEntryLoading] = useState(false);
   const { mutate } = api.entry.create.useMutation();
 
+  /** Wheel */
+  const [wheel, setWheel] = useState<{
+    data: {
+      data: Data,
+      meta: { color: string };
+      date: Date;
+    }[]
+    captions: Captions;
+}>(null as any);
+  const { data: wheelResult, isLoading: isWheelLoading, refetch } = api.wheel.getWheel.useQuery();
+
+  useEffect(() => {
+    if (!isWheelLoading && wheelResult) {
+      if (wheelResult) setWheel(wheelResult);
+    }
+  }
+  , [isWheelLoading]);
+
   /** Handle form submission */
   const onSubmit: SubmitHandler<FieldValues> = async (entry) => {
     setIsEntryLoading(true);
@@ -80,6 +98,7 @@ const Home: NextPage = () => {
           setIsEntryLoading(false);
           closeModal();
           reset();
+          refetch();
         },
         onError: (error) => {
           setIsEntryLoading(false);
@@ -87,24 +106,6 @@ const Home: NextPage = () => {
       }
     );
   };
-
-  /** Wheel */
-  const [wheel, setWheel] = useState<{
-    data: {
-      data: Data,
-      meta: { color: string };
-      date: Date;
-    }[]
-    captions: Captions;
-}>(null as any);
-  const { data: wheelResult, isLoading: isWheelLoading } = api.wheel.getWheel.useQuery();
-
-  useEffect(() => {
-    if (!isWheelLoading && wheelResult) {
-      if (wheelResult) setWheel(wheelResult);
-    }
-  }
-  , [isWheelLoading]);
 
   return (
     <>
