@@ -72,7 +72,7 @@ const Home: NextPage = () => {
     }[]
     captions: Captions;
 }>(null as any);
-  const { data: wheelResult, isLoading: isWheelLoading, refetch } = api.wheel.getWheel.useQuery();
+  const { data: wheelResult, isLoading: isWheelLoading, refetch: refetchWheel } = api.wheel.getWheel.useQuery();
 
   useEffect(() => {
     if (!isWheelLoading && wheelResult) {
@@ -93,12 +93,11 @@ const Home: NextPage = () => {
         },
       },
       {
-        onSuccess: (data) => {
-          console.log(data);
+        onSuccess: async (data) => {
+          await refetchWheel();
           setIsEntryLoading(false);
           closeModal();
           reset();
-          refetch();
         },
         onError: (error) => {
           setIsEntryLoading(false);
