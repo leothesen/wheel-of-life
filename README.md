@@ -9,9 +9,6 @@ A simple app to track the energy you've put into different areas of your life.
 4. Push the db schema`npx prisma db push`
 4. Run `pnpm run dev`
 
-
-BUG: when a new user signs up and is redirected from values to entires, no entries appear in the modal. But if you refresh the page they do appear. So it's a problem with the way the entries are being fetched.
-
 # Further development
 
 ## TODO next
