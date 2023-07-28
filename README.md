@@ -15,6 +15,7 @@ BUG: when a new user signs up and is redirected from values to entires, no entri
 # Further development
 
 ## TODO next
+- [ ] setup production Clerk
 - [ ] clean up types and interfaces
 - [ ] just as you add your first values - either make sure that the values refresh. Or the wheel says something cute like now add your first entry. It's probably best to actually just show the cute message to help with the UX.
 - [ ] entries: add table
