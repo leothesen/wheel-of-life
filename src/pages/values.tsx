@@ -11,22 +11,13 @@ const Values: NextPage = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isValuesLoading, setIsValuesLoading] = useState(true);
   const [values, setValues] = useState<string[]>(["", "", "", "", ""]);
-  const [userValues, setUserValues] = useState<string[]>([]);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { mutate } = api.value.create.useMutation();
-  const { data: userValueData, isLoading: isUserValuesLoading } =
+  const { data: userValues, isLoading: isUserValuesLoading } =
     api.value.getUserValues.useQuery();
 
-  useEffect(() => {
-    if (userValueData) {
-      setUserValues(
-        userValueData.map((userValue: UserValues) => userValue.value)
-      );
-      console.log(userValueData);
-    }
-  }, [isUserValuesLoading]);
 
   useEffect(() => {
     if (!isUserValuesLoading && userValues) {
@@ -84,55 +75,76 @@ const Values: NextPage = () => {
       <Layout>
         {isValuesLoading ? (
           <Loading />
-        ) : (<main className="flex min-h-screen items-center justify-center">
-          <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-            <div className="flex flex-col items-center gap-4">
-              {values.map((value, index) => (
-                <div
-                  key={index}
-                  className="flex justify-center"
-                  style={{ width: "200%" }}
+        ) : (
+          <main className="items-top flex min-h-screen justify-center">
+            <div className="container flex flex-col items-center gap-12 px-4 py-16">
+              <article className="prose text-center">
+                <h1>What are your values?</h1>
+                <p>
+                  Your values are the things that you believe are important in
+                  the way you live your life. They help guide your reactions and
+                  inform your decisions.
+                </p>
+                <p>
+                  <a
+                    className="link-secondary link "
+                    href="https://www.mindtools.com/a5eygum/what-are-your-values"
+                    target="_blank"
+                  >
+                    Use this link
+                  </a>{" "}
+                  to learn more about values and how to identify your own.
+                </p>
+                <p>
+                  Now fill out five or more values below that you will track in the Wheel of Life.
+                </p>
+              </article>
+              <div className="flex flex-col items-center gap-4">
+                {values.map((value, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-center"
+                    style={{ width: "200%" }}
+                  >
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
+                      maxLength={25}
+                      className={`input-bordered input ${
+                        value.length > 24 ? "border-red-500" : ""
+                      }`}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                ))}
+              </div>
+              {/* An error warning in red text */}
+              {submitError && (
+                <div className="text-center text-red-500">{submitError}</div>
+              )}
+              <div className="join flex w-full justify-center">
+                <button
+                  className={`btn-primary join-item btn ${
+                    isSubmitLoading ? "animate-pulse" : ""
+                  }`}
+                  onClick={handleClick}
+                  disabled={isSubmitLoading}
                 >
-                  <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    maxLength={25}
-                    className={`input-bordered input ${
-                      value.length > 24 ? "border-red-500" : ""
-                    }`}
-                    style={{ width: "100%" }}
-                  />
-                </div>
-              ))}
+                  Submit
+                </button>
+
+                <button
+                  className="btn-secondary join-item btn"
+                  onClick={handleAddInput}
+                  disabled={isSubmitLoading}
+                >
+                  Add Input
+                </button>
+              </div>
             </div>
-
-            {/* An error warning in red text */}
-            {submitError && (
-              <div className="text-center text-red-500">{submitError}</div>
-            )}
-
-            <div className="join flex w-full justify-center">
-              <button
-                className={`btn-primary join-item btn ${
-                  isSubmitLoading ? "animate-pulse" : ""
-                }`}
-                onClick={handleClick}
-                disabled={isSubmitLoading}
-              >
-                {isSubmitLoading ? "Loading..." : "Submit"}
-              </button>
-
-              <button
-                className="btn-secondary join-item btn"
-                onClick={handleAddInput}
-                disabled={isSubmitLoading}
-              >
-                Add Input
-              </button>
-            </div>
-          </div>
-        </main>)}
+          </main>
+        )}
       </Layout>
     </>
   );

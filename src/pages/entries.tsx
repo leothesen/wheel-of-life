@@ -46,18 +46,8 @@ const Home: NextPage = () => {
   };
 
   /** User values */
-  const [userValues, setUserValues] = useState<string[]>([]);
-  const { data: userValuesResult, isLoading: isUserValuesLoading } =
+  const { data: userValues, isLoading: isUserValuesLoading } =
     api.value.getUserValues.useQuery();
-
-  useEffect(() => {
-    if (!isUserValuesLoading && userValuesResult) {
-      const mappedValues = userValuesResult.map((value) => value.value);
-      setUserValues(mappedValues);
-    }
-
-    // TODO: Redirect to /values if user has no values
-  }, [isUserValuesLoading]);
 
   /** User Entry */
   const [isEntryLoading, setIsEntryLoading] = useState(false);
@@ -112,7 +102,7 @@ const Home: NextPage = () => {
         {isUserValuesLoading || isWheelLoading ? ( // Render skeleton loading when isLoading is true
           <Loading />
         ) : (
-          <main className="flex min-h-screen flex-col items-center justify-center">
+          <main className="flex min-h-screen flex-col items-top items-center justify-center">
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
               <RadarGraph size={700} data={wheelResult?.data} values={wheelResult?.captions} />
               <button className="btn-primary btn" onClick={openModal}>
@@ -155,15 +145,12 @@ const Home: NextPage = () => {
                             userValues.map((value, index) => (
                               <div key={index} className="mt-4">
                                 <label className="mb-2">{value}:</label>
-                                {/* Todo: change this to a slider */}
                                 <input
                                   type="range"
                                   min={0}
                                   max="10"
-                                  // value="0"
                                   className="range range-primary"
                                   key={index}
-                                  // onClick={() => console.log("clicked")}
                                   {...register(`ratings.${index}.${value}`, {
                                     required: "Required",
                                   })}

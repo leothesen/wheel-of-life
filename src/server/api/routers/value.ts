@@ -25,8 +25,8 @@ export const valueRouter = createTRPCRouter({
     return ctx.prisma.userValues.findMany();
   }),
 
-  getUserValues: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.userValues.findMany({
+  getUserValues: protectedProcedure.query(async ({ ctx }) => {
+    const userValues = await ctx.prisma.userValues.findMany({
       where: {
         userId: ctx.auth.userId,
       },
@@ -34,5 +34,7 @@ export const valueRouter = createTRPCRouter({
         createdAt: "asc",
       },
     });
+
+    return userValues.map((userValue) => userValue.value);
   }),
 });
