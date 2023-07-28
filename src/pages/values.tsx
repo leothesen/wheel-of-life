@@ -11,22 +11,13 @@ const Values: NextPage = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isValuesLoading, setIsValuesLoading] = useState(true);
   const [values, setValues] = useState<string[]>(["", "", "", "", ""]);
-  const [userValues, setUserValues] = useState<string[]>([]);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { mutate } = api.value.create.useMutation();
-  const { data: userValueData, isLoading: isUserValuesLoading } =
+  const { data: userValues, isLoading: isUserValuesLoading } =
     api.value.getUserValues.useQuery();
 
-  useEffect(() => {
-    if (userValueData) {
-      setUserValues(
-        userValueData.map((userValue: UserValues) => userValue.value)
-      );
-      console.log(userValueData);
-    }
-  }, [isUserValuesLoading]);
 
   useEffect(() => {
     if (!isUserValuesLoading && userValues) {
@@ -104,6 +95,9 @@ const Values: NextPage = () => {
                   </a>{" "}
                   to learn more about values and how to identify your own.
                 </p>
+                <p>
+                  Now fill out five or more values below that you will track in the Wheel of Life.
+                </p>
               </article>
               <div className="flex flex-col items-center gap-4">
                 {values.map((value, index) => (
@@ -137,7 +131,7 @@ const Values: NextPage = () => {
                   onClick={handleClick}
                   disabled={isSubmitLoading}
                 >
-                  {isSubmitLoading ? "Loading..." : "Submit"}
+                  Submit
                 </button>
 
                 <button
