@@ -1,32 +1,30 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+// Adapted model schema for PostgreSQL using NeonDB
+// Importing PostgreSQL-specific types and utilities from NeonDB
 
 import { sql } from "drizzle-orm";
 import {
-  bigint,
+  serial,
   index,
-  mysqlTableCreator,
+  pgTableCreator,
   timestamp,
   varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 
 /**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
+ * Adaptation for PostgreSQL using NeonDB. This example assumes the usage of similar
+ * functionalities in NeonDB as in Drizzle ORM for MySQL.
  */
-export const mysqlTable = mysqlTableCreator((name) => `wheel-of-life_${name}`);
+export const postgresTable = pgTableCreator((name) => `wheel-of-life_${name}`);
 
-export const posts = mysqlTable(
+export const posts = postgresTable(
   "post",
   {
-    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+    id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
