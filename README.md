@@ -15,7 +15,11 @@ BUG: when a new user signs up and is redirected from values to entires, no entri
 # Further development
 
 ## TODO next
-- [ ] setup production Clerk
+- [ ] change the radar to this: https://github.com/shauns/react-d3-radar
+- [ ] change colour of link to be darker
+- [ ] add form that allows for people to suggest changes or improvements.
+- [ ] it's possible after signing up with username and password that the user is sent straight to the entries page. So there needs to be a check if no values are returned - the user should be pushed to the values page. 
+- [ ] try use Neon to have a dedicated production database
 - [ ] clean up types and interfaces
 - [ ] just as you add your first values - either make sure that the values refresh. Or the wheel says something cute like now add your first entry. It's probably best to actually just show the cute message to help with the UX.
 - [ ] entries: add table
