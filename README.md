@@ -1,35 +1,28 @@
 # Wheel of Life
-A simple app to track the energy you've put into different areas of your life.
 
-## Local development
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-1. Create a [Clerk account](https://dashboard.clerk.dev/sign-up)
-2. Copy `.env.example` and rename to `.env` and add your keys found in the dashboard.
-3. Run `pnpm install`
-4. Push the db schema`npx prisma db push`
-4. Run `pnpm run dev`
+## What's next? How do I make an app with this?
 
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-BUG: when a new user signs up and is redirected from values to entires, no entries appear in the modal. But if you refresh the page they do appear. So it's a problem with the way the entries are being fetched.
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-# Further development
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-## TODO next
-- [ ] change the radar to this: https://github.com/shauns/react-d3-radar
-- [ ] change colour of link to be darker
-- [ ] add form that allows for people to suggest changes or improvements.
-- [ ] it's possible after signing up with username and password that the user is sent straight to the entries page. So there needs to be a check if no values are returned - the user should be pushed to the values page. 
-- [ ] try use Neon to have a dedicated production database
-- [ ] clean up types and interfaces
-- [ ] just as you add your first values - either make sure that the values refresh. Or the wheel says something cute like now add your first entry. It's probably best to actually just show the cute message to help with the UX.
-- [ ] entries: add table
-- [ ] add themes
-- [ ] fix for different mobile phones (especially the index page)
-- [ ] manage values: edit and delete (maybe no delete neccessary)
-- [ ] upgrade prisma: https://www.prisma.io/docs/guides/upgrade-guides/upgrading-versions/upgrading-to-prisma-5
-- [ ] use https://www.youtube.com/watch?v=E4TH77SMOG8 to get state management working properly
-- [ ] use animations: https://blog.openreplay.com/animations-and-transitions-with-tailwind-css/
+## Learn More
 
-## Other features
-- [ ] use ChatGPT to generate values from a Q&A. It will be nice to play around with the API and Vercel. 
-- [ ] as you enter values you see them appear on a wheel?
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+
+## How do I deploy this?
+
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
